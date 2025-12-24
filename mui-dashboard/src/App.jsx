@@ -1,16 +1,19 @@
-import { Button, Container, Typography } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Admin Dashboard
-      </Typography>
+    <Box sx={{ display: "flex" }}>
+      <Header />
+      <Sidebar />
 
-      <Button variant="contained">
-        MUI is Working
-      </Button>
-    </Container>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <Dashboard />
+      </Box>
+    </Box>
   );
 }
 
