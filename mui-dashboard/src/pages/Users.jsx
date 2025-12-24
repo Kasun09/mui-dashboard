@@ -18,6 +18,13 @@ const Users = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    // Pagination state
+    const [page, setPage] = useState(1);
+    const rowsPerPage = 5;
+
+    // Slice users for current page
+    const paginatedUsers = users.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -35,6 +42,9 @@ const Users = () => {
 
     if (loading) return <CircularProgress />;
     if (error) return <Alert severity="error">{error}</Alert>;
+    if (!loading && users.length === 0) {
+        return <Alert severity="info">No users found.</Alert>;
+    }
 
     return (
         <>
@@ -54,8 +64,11 @@ const Users = () => {
                     </TableHead>
 
                     <TableBody>
-                        {users.map((user) => (
-                            <TableRow key={user.id}>
+                        {paginatedUsers.map((user) => (
+                            <TableRow
+                                key={user.id}
+                                sx={{ "&:hover": { backgroundColor: "#f5f5f5" } }}
+                            >
                                 <TableCell>{user.id}</TableCell>
                                 <TableCell>
                                     {user.firstName} {user.lastName}
@@ -66,6 +79,18 @@ const Users = () => {
                         ))}
                     </TableBody>
                 </Table>
+                <div style={{ marginTop: 16 }}>
+                    <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+                        Previous
+                    </button>
+                    <span style={{ margin: "0 8px" }}>Page {page}</span>
+                    <button
+                        disabled={page * rowsPerPage >= users.length}
+                        onClick={() => setPage(page + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
             </TableContainer>
         </>
     );
