@@ -1,15 +1,16 @@
-import {
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
-    Toolbar,
-    ListItemButton,
-} from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, Toolbar, ListItemButton } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const Sidebar = () => {
+    const location = useLocation();
+
+    const menuItems = [
+        { text: "Dashboard", path: "/" },
+        { text: "Users", path: "/users" },
+    ];
+
     return (
         <Drawer
             variant="permanent"
@@ -25,9 +26,13 @@ const Sidebar = () => {
             <Toolbar />
 
             <List>
-                {["Dashboard", "Users", "Settings"].map((text) => (
+                {menuItems.map(({ text, path }) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton
+                            component={Link}
+                            to={path}
+                            selected={location.pathname === path}
+                        >
                             <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>
